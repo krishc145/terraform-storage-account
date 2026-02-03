@@ -1,41 +1,43 @@
-terraform {
-  required_version = ">= 1.5.0"
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 3.70.0"
-    }
+variable "storage_account_name" {
+  description = "Storage Account name (must be globally unique and 3-24 lowercase letters/numbers only)"
+  type        = string
+  default     = "demostgacct12345"
+}
+
+variable "account_tier" {
+  description = "Storage account tier"
+  type        = string
+  default     = "Standard"
+}
+
+variable "replication_type" {
+  description = "Replication type: LRS / GRS / RAGRS / ZRS / GZRS"
+  type        = string
+  default     = "LRS"
+}
+
+variable "account_kind" {
+  description = "Storage account kind: StorageV2 is recommended"
+  type        = string
+  default     = "StorageV2"
+}
+
+variable "subscription_id" {
+  description = "Azure Subscription ID"
+  type        = string
+}
+
+variable "access_tier" {
+  description = "Access tier: Hot / Cool"
+  type        = string
+  default     = "Hot"
+}
+
+variable "tags" {
+  description = "Tags for all resources"
+  type        = map(string)
+  default = {
+    environment = "dev"
+    project     = "terraform-demo"
   }
-}
-
-provider "azurerm" {
-  features {}
-
-  subscription_id                 = var.subscription_id
-  resource_provider_registrations = "none"
-}
-
-# -----------------------------
-# Existing Resource Group (KodeKloud)
-# -----------------------------
-data "azurerm_resource_group" "rg" {
-  name = "kml_rg_main-482a0ce4bb864cd9"
-}
-
-# -----------------------------
-# Storage Account
-# -----------------------------
-resource "azurerm_storage_account" "stg" {
-  name                     = var.storage_account_name
-  resource_group_name      = data.azurerm_resource_group.rg.name
-  location                 = data.azurerm_resource_group.rg.location
-  account_tier             = var.account_tier
-  account_replication_type = var.replication_type
-  account_kind             = var.account_kind
-  access_tier              = var.access_tier
-
-  https_traffic_only_enabled = true
-  min_tls_version            = "TLS1_2"
-
-  tags = var.tags
 }
