@@ -1,7 +1,7 @@
 variable "storage_account_name" {
   description = "Storage Account name (must be globally unique and 3-24 lowercase letters/numbers only)"
   type        = string
-  default     = "demostgacct12345"
+  default     = "krishna123ghgh7tu"
 }
 
 variable "account_tier" {
