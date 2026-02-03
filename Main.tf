@@ -16,11 +16,10 @@ provider "azurerm" {
 }
 
 # -----------------------------
-# Resource Group
+# Existing Resource Group (KodeKloud)
 # -----------------------------
-resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
-  location = var.location
+data "azurerm_resource_group" "rg" {
+  name = "kml_rg_main-482a0ce4bb864cd9"
 }
 
 # -----------------------------
@@ -28,8 +27,8 @@ resource "azurerm_resource_group" "rg" {
 # -----------------------------
 resource "azurerm_storage_account" "stg" {
   name                     = var.storage_account_name
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
+  resource_group_name      = data.azurerm_resource_group.rg.name
+  location                 = data.azurerm_resource_group.rg.location
   account_tier             = var.account_tier
   account_replication_type = var.replication_type
   account_kind             = var.account_kind
